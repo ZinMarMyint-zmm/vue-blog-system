@@ -5,7 +5,7 @@
       {{error}}
     </div>
     
-    <div v-if="posts.length>0" class="layout">
+    <div v-if="posts.length" class="layout">
       <div>
         <PostsList :posts="posts"></PostsList>
       </div>
