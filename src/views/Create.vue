@@ -16,13 +16,14 @@
   </form>
   
 </template>
-
+                    
 <script>
-
+import {db} from '../firebase/config';
 import { ref } from '@vue/reactivity';
 import { useRouter } from 'vue-router';
 export default {
     setup(){
+        
         let router = useRouter();
         let title=ref("");//title
         let body=ref("");//body
@@ -35,22 +36,17 @@ export default {
             }
             tag.value="";
         }
+        
         let addPost=async()=>{
-            await fetch('http://localhost:3000/posts',{
-                method:"POST",
-                headers:{
-                    "Content-Type" : "application/json"
-                },
-                body:JSON.stringify({
-                    title:title.value,  //""
-                    body:body.value,    //""
-                    tags:tags.value     //[]
-                })
-            })
-            // redirect user to home page
-            router.push('/');
+           let newPost = {
+            title:title.value,  
+            body:body.value,  
+            tags:tags.value
+          } 
+          let res = await db.collection('posts').add(newPost);
+          
+          router.push('/');
         }
-
         return {router,title,body,tag,handleKeyDown,tags,addPost}
     }
 }
